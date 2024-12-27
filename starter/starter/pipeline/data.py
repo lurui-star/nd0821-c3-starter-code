@@ -1,5 +1,38 @@
+"""
+Author: Rui Lu
+Date: December 2024
+
+This script contains a function to fetch data from a local directory and perform preliminary cleaning.
+"""
+
+import pandas as pd 
 import numpy as np
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
+
+
+def import_data(pth):
+    """
+    Imports data from the provided path and cleans the column names and categorical features.
+    
+    Inputs
+    ------
+    pth : str
+        Path to the dataset file (CSV or other format supported by pandas).
+    
+    Returns
+    -------
+    X : pd.DataFrame
+        Cleaned data with stripped column names and categorical features.
+    """
+    
+    # Load the dataset from the given path
+    X = pd.read_csv(pth)
+    
+    # Strip column names
+    X.columns = X.columns.str.strip()
+    
+    return X
+
 
 
 def process_data(
@@ -43,7 +76,12 @@ def process_data(
         Trained LabelBinarizer if training is True, otherwise returns the binarizer
         passed in.
     """
-
+    # Clean categorical columns if provided
+    if categorical_features is not None:
+        for col in categorical_features:
+            if col in X.columns:
+                X[col] = X[col].astype(str).str.strip()
+    
     if label is not None:
         y = X[label]
         X = X.drop([label], axis=1)
