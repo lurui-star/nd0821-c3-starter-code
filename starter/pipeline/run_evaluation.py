@@ -1,12 +1,22 @@
+"""
+Author: Rui Lu
+Date: December, 2024
+This script run evaluate_model 
+"""
 
 import logging
 import pickle
 import os
+import pandas as pd
+from pipeline.utils import plot_roc_curve
+from pipeline.utils import plot_feature_importance
+from pipeline.utils import save_model
+from pipeline.evaluate import compute_model_metrics
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
 
-def evaluate_model(y, Y_pred, Y_pred_prob, best_model, X, output_dir=".",set_name="Test Set"):
+def run_evaluate_model(y, Y_pred, Y_pred_prob, best_model, X, output_dir=".",set_name="Test Set"):
     """
     Evaluate model performance and save results (metrics, plots, and model) to specified directory.
     

@@ -1,3 +1,9 @@
+"""
+Author: Rui Lu
+Date: December, 2024
+This script holds the model evaluation function
+"""
+
 from sklearn.metrics import roc_curve,accuracy_score,f1_score,fbeta_score,recall_score,precision_score, auc
 
 def compute_model_metrics(y, preds,pred_prob):

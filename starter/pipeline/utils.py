@@ -1,5 +1,13 @@
+"""
+Author: Rui Lu
+Date: December, 2024
+This script holds the plot and save functions
+"""
+
+
 import matplotlib.pyplot as plt
-impot os
+import os
+import pandas as pd
 import pickle
 
 
