@@ -11,7 +11,7 @@ import pandas as pd
 from pipeline.utils import plot_roc_curve
 from pipeline.utils import plot_feature_importance
 from pipeline.utils import save_model
-from pipeline.evaluate import compute_model_metrics
+from pipeline.evaluate_functions import compute_model_metrics
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
