@@ -4,6 +4,7 @@ Date: December, 2024
 This script used for run training, evaluting and saving the model
 """
 import sys
+import os
 import joblib
 import logging
 from sklearn.model_selection import train_test_split
@@ -18,7 +19,6 @@ from pipeline.model import inference
 from pipeline.evaluate_functions import compute_model_metrics
 import xgboost as xgb
 from sklearn.linear_model import LogisticRegression
-import argparse
 import yaml
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -57,11 +57,13 @@ def go(config):
                                     y_train,
                                     config["main"]["modeling"]["param_grid"],
                                     config["main"]["modeling"]["FEATURES"])
-    
     logging.info("Run inference on the validation set")
     Y_test_pred, Y_test_pred_prob = inference(best_model, X_val)
     logging.info("Evaluate the model performance")
-    run_evaluate_model(y_val, Y_test_pred, Y_test_pred_prob, best_model, X_val, output_dir=config["main"]["modeling"]["output_dir"])
+    run_evaluate_model(y_val, Y_test_pred, Y_test_pred_prob, best_model, X_val, output_dir=os.getcwd()+config["main"]["modeling"]["output_dir"],
+                       model_dir=os.getcwd()+config["main"]["modeling"]["model_dir"],
+                       slice_evaluation_by_feature=config["main"]["modeling"]["slice_output"]["slice_evaluation_by_feature"], 
+                       categorical_features=config["main"]["modeling"]["slice_output"]["categorical_features"])
 
 if __name__ == "__main__":
     go(config)

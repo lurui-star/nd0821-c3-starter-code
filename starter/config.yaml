@@ -1,6 +1,5 @@
 main:
-  project_name: "salary prediction"  
-  experiment_name: "development"  
+  project_name: "starter"  
   data:
     pth: "/Users/ruilu/nd0821-c3-starter-code/starter/data/census.csv"
     categorical_features: 
@@ -57,4 +56,10 @@ main:
       model__colsample_bytree: 
         - 0.8
         - 1.0
-    output_dir: "Users/ruilu/nd0821-c3-starter-code/starter/results"
+    slice_output:
+        slice_evaluation_by_feature: True
+        categorical_features: 
+        - 'sex'
+    output_dir: "/results"
+    model_dir : "/model"
+
