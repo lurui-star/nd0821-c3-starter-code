@@ -3,8 +3,8 @@ features_info:
   "workclass": "MORE INFO NEEDED - categorical - str"
   "fnlgt": "MORE INFO NEEDED - numerical - int"
   "education": "Education level of the person - ordinal categorical - str"
-  "education_num": "Education level of the person - ordinal categorical - int"
-  "marital_status": "Marital status of the person - nominal categorical - str"
+  "education-num": "Education level of the person - ordinal categorical - int"
+  "marital-status": "Marital status of the person - nominal categorical - str"
   "occupation": "Occupation of the person - nominal categorical - str"
   "relationship": "Relationship of the person - nominal categorical - str"
   "race": "Race of the person - nominal categorical - str"
@@ -13,6 +13,7 @@ features_info:
   "capital-loss": "Capital loss of the person - numerical - int"
   "hours-per-week": "Hours of work per week of the person - numerical - int"
   "native-country": "Native country of the person - nominal categorical - str"
+
 
 post_examples:
   "Class <=50k (Label 0)":

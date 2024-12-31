@@ -7,22 +7,22 @@ from enum import Enum
 from typing import Optional
 from pydantic import BaseModel
 
-
+# Pydantic model for input validation
 class FeatureInfo(str, Enum):
     age = "age"
     workclass = "workclass"
     fnlgt = "fnlgt"
     education = "education"
-    education_num = "education_num"
-    marital_status = "marital_status"
+    education_num = "education-num"  
+    marital_status = "marital-status" 
     occupation = "occupation"
     relationship = "relationship"
     race = "race"
     sex = "sex"
-    captial_gain = "capital_gain"
-    captial_loss = "capital_loss"
-    hours_per_week = "hours_per_week"
-    native_country = "native_country"
+    capital_gain = "capital-gain"  
+    capital_loss = "capital-loss"  
+    hours_per_week = "hours-per-week"  
+    native_country = "native-country" 
 
 
 class Person(BaseModel):
@@ -39,4 +39,5 @@ class Person(BaseModel):
     capital_gain: int
     capital_loss: int
     hours_per_week: int
-    native_country: Optional[str] = None
+    native_country:Optional[str] = None
+    country: Optional[str] = None
