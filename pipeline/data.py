@@ -4,7 +4,7 @@ Date: December 2024
 
 This script contains a function to fetch data from a local directory and perform preliminary cleaning.
 """
-import pandas as pd 
+import pandas as pd
 import numpy as np
 import logging
 
@@ -12,28 +12,29 @@ import logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
 
+
 def import_data(pth):
     """
     Imports data from the provided path and cleans the column names and categorical features.
-    
+
     Inputs
     ------
     pth : str
         Path to the dataset file (CSV or other format supported by pandas).
-    
+
     Returns
     -------
     X : pd.DataFrame
         Cleaned data with stripped column names and categorical features.
     """
-    
+
     # Load the dataset from the given path
     logger.info("Downloading data set")
     X = pd.read_csv(pth)
-    
+
     # Strip column names
     X.columns = X.columns.str.strip()
-    
+
     return X
 
 
@@ -61,7 +62,7 @@ def process_data(X, categorical_features=[], label=None):
     y : pd.Series or None
         Processed label data as a pandas Series, or None if label is None.
     """
-    
+
     # Handle categorical features: strip spaces and convert to strings
     logger.info("Handle categorical features")
     if categorical_features:

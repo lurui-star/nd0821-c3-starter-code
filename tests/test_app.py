@@ -12,6 +12,7 @@ from app.main import app
 
 client = TestClient(app)
 
+
 def test_greetings():
     """
     Tests GET greetings function

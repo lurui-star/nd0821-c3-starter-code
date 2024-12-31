@@ -32,11 +32,15 @@ with open(config['example_dir']) as fp:
     examples = yaml.safe_load(fp)
 
 # Greeting endpoint
+
+
 @app.get("/")
 async def greetings():
     return {"greeting": "Welcome to salary prediction!"}
 
 # Function to extract example data
+
+
 def example_data_extract(example_data):
     """
     Extract and return a DataFrame from the provided example data.
@@ -57,7 +61,8 @@ def example_data_extract(example_data):
     for item in example_types:
         try:
             # Extract the data using the example type
-            data = example_data['post_examples'].get(item, {}).get('value', None)
+            data = example_data['post_examples'].get(
+                item, {}).get('value', None)
 
             if data is None:
                 print(f"Warning: No data found for {item}. Skipping.")
@@ -90,6 +95,8 @@ def example_data_extract(example_data):
     return final_df
 
 # Feature info endpoint
+
+
 @app.get("/feature_info/{feature_name}")
 async def feature_info(feature_name: str):
     """
@@ -99,9 +106,12 @@ async def feature_info(feature_name: str):
         info = examples['features_info'][feature_name]
         return info
     except KeyError:
-        raise HTTPException(status_code=404, detail=f"Feature '{feature_name}' not found.")
+        raise HTTPException(
+            status_code=404, detail=f"Feature '{feature_name}' not found.")
 
 # Prediction endpoint
+
+
 @app.post("/predict/")
 async def predict(
     example: str = ExampleType.class_less_than_50k,  # Default example type
@@ -110,20 +120,23 @@ async def predict(
     df = example_data_extract(examples)
 
     if df.empty:
-        raise HTTPException(status_code=404, detail="No valid example data available.")
+        raise HTTPException(
+            status_code=404, detail="No valid example data available.")
 
     # Process the data (this will return X and y)
-    X, y = process_data(df, config["main"]["data"]["categorical_features"],config["main"]["data"]["label"])
-    
+    X, y = process_data(
+        df, config["main"]["data"]["categorical_features"], config["main"]["data"]["label"])
+
     # Filter the data to match the selected example type (e.g., "Class <=50k (Label 0)")
     X_example = X[X["example_type"] == example].drop("example_type", axis=1)
 
     if X_example.empty:
-        raise HTTPException(status_code=404, detail=f"No data available for example type: {example}")
+        raise HTTPException(
+            status_code=404, detail=f"No data available for example type: {example}")
 
     # Perform inference (model inference using the X_example data)
     pred_label, pred_prob = inference(model, X_example)
-    
+
     # Convert predicted label to integer and probability to float
     pred_label = int(pred_label)
     pred_prob = float(pred_prob[:, 1])

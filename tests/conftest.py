@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 import pytest
 import yaml
 
+
 @pytest.fixture(scope='session')
 def config():
     """
@@ -19,14 +20,14 @@ def config():
     """
     # Define the path to the folder where the config.yaml file is located
     config_folder = "/Users/ruilu/nd0821-c3-starter-code/starter/"
-    
+
     # Construct the full path to the config.yaml file
     config_path = os.path.join(config_folder, "config.yaml")
-    
+
     # Open and load the YAML config file
     with open(config_path, "r") as file:
         config = yaml.safe_load(file)
-    
+
     # Return the loaded config to be used in tests
     return config
 
@@ -43,13 +44,14 @@ def load_data(config):
     data_path = config['main']['data']['pth']
     if not os.path.exists(data_path):
         pytest.fail(f"Data not found at path: {data_path}")
-    
+
     # Import the data from the specified path
     df = import_data(data_path)
 
     # Process the data: handle categorical features and label
-    X, y = process_data(df, config["main"]["data"]["categorical_features"], config["main"]["data"]["label"])
-    
+    X, y = process_data(
+        df, config["main"]["data"]["categorical_features"], config["main"]["data"]["label"])
+
     return X, y
 
 
@@ -63,27 +65,27 @@ def train_test_split_fixture(config):
     """
     # Get the data path from the config
     data_path = config['main']['data']['pth']
-    
+
     # Check if the data exists at the given path
     if not os.path.exists(data_path):
         pytest.fail(f"Data not found at path: {data_path}")
-    
+
     # Import the data
     df = import_data(data_path)
-    
+
     # Process the data: handle categorical features and label
     X, y = process_data(
         df,
         config["main"]["data"]["categorical_features"],
         config["main"]["data"]["label"]
     )
-    
+
     # Split the data into training and validation sets
     X_train, X_val, y_train, y_val = train_test_split(
         X, y,
         test_size=config["main"]["train_test_split"]["test_size"],
         random_state=config["main"]["train_test_split"]["random_state"]
     )
-    
+
     # Return the split data
     return X_train, X_val, y_train, y_val

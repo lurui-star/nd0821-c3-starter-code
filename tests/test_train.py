@@ -23,28 +23,28 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
 
 
-
 def get_model_from_config(model_config: dict):
     """ Given a model configuration dict, return the corresponding model instance. """
-    
+
     if 'XGBClassifier' in model_config:
         model_params = model_config['XGBClassifier']
-        model =XGBClassifier(**model_params)  # Use parameters from config
+        model = XGBClassifier(**model_params)  # Use parameters from config
         return model
-    
+
     elif 'LogisticRegression' in model_config:
         model_params = model_config['LogisticRegression']
-        model = LogisticRegression(**model_params)  # Use parameters from config
+        # Use parameters from config
+        model = LogisticRegression(**model_params)
         return model
-    
+
     else:
         raise ValueError("Unsupported model configuration.")
-    
+
 
 def test_train_and_evaluate_model(train_test_split_fixture, config):
     try:
         # Get model from config and train
-        X_train, X_val, y_train, y_val=train_test_split_fixture
+        X_train, X_val, y_train, y_val = train_test_split_fixture
         model = get_model_from_config(config["main"]["modeling"]["MODEL"])
         best_model, best_params = train(model,
                                         X_train,  # X_train
@@ -55,9 +55,12 @@ def test_train_and_evaluate_model(train_test_split_fixture, config):
         # Run model evaluation
         Y_test_pred, Y_test_pred_prob = inference(best_model, X_val)
         run_evaluate_model(y_val, Y_test_pred, Y_test_pred_prob, best_model, X_val,
-                           output_dir=os.getcwd()+config["main"]["modeling"]["output_dir"],
-                           model_dir=os.getcwd()+config["main"]["modeling"]["model_dir"],
-                           slice_evaluation_by_feature=config["main"]["modeling"]["slice_output"]["slice_evaluation_by_feature"], 
+                           output_dir=os.getcwd() +
+                           config["main"]["modeling"]["output_dir"],
+                           model_dir=os.getcwd() +
+                           config["main"]["modeling"]["model_dir"],
+                           slice_evaluation_by_feature=config["main"]["modeling"][
+                               "slice_output"]["slice_evaluation_by_feature"],
                            categorical_features=config["main"]["modeling"]["slice_output"]["categorical_features"])
 
         logging.info("SUCCESS: Training and evaluating model")

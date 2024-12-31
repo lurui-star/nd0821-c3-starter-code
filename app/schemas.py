@@ -8,12 +8,14 @@ from typing import Optional
 from pydantic import BaseModel
 
 # Define the Enum for valid example types
+
+
 class ExampleType(str, Enum):
     class_less_than_50k = "Class <=50k (Label 0)"
     class_greater_than_50k = "Class >50k (Label 1)"
     missing_sample = "Missing sample"
     error_sample = "Error sample"
-    
+
 
 # Pydantic model for input validation
 class FeatureInfo(str, Enum):
@@ -21,16 +23,16 @@ class FeatureInfo(str, Enum):
     workclass = "workclass"
     fnlgt = "fnlgt"
     education = "education"
-    education_num = "education-num"  
-    marital_status = "marital-status" 
+    education_num = "education-num"
+    marital_status = "marital-status"
     occupation = "occupation"
     relationship = "relationship"
     race = "race"
     sex = "sex"
-    capital_gain = "capital-gain"  
-    capital_loss = "capital-loss"  
-    hours_per_week = "hours-per-week"  
-    native_country = "native-country" 
+    capital_gain = "capital-gain"
+    capital_loss = "capital-loss"
+    hours_per_week = "hours-per-week"
+    native_country = "native-country"
 
 
 class Person(BaseModel):
@@ -47,5 +49,5 @@ class Person(BaseModel):
     capital_gain: int
     capital_loss: int
     hours_per_week: int
-    native_country:Optional[str] = None
+    native_country: Optional[str] = None
     country: Optional[str] = None

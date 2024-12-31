@@ -3,7 +3,8 @@ Author: Rui Lu
 Date: December, 2024
 This script holds the test functions for dataset
 """
-import pandas as pd 
+import pandas as pd
+
 
 def test_columns_exist(load_data):
     """
@@ -13,10 +14,11 @@ def test_columns_exist(load_data):
       load_data: Data to be tested (pandas DataFrame)
     """
     # Assume load_data is a DataFrame or similar structure
-    X,y = load_data  # load_data is passed automatically by pytest as a fixture
+    X, y = load_data  # load_data is passed automatically by pytest as a fixture
 
     df = pd.concat([X, y], axis=1)  # Concatenate X and y along columns
-    df.rename(columns={y.name: 'salary'}, inplace=True)  # Rename target column to 'salary'
+    # Rename target column to 'salary'
+    df.rename(columns={y.name: 'salary'}, inplace=True)
 
     # List of expected columns
     expected_columns = [
@@ -35,7 +37,7 @@ def test_columns_exist(load_data):
         'hours-per-week',
         'native-country',
         'salary'
-        
+
     ]
 
     # Check if each expected column is in the DataFrame
@@ -44,7 +46,6 @@ def test_columns_exist(load_data):
 
     # If necessary, you can also print out the columns that were found for verification
     print("Found columns in DataFrame:", X.columns)
-
 
 
 def test_column_dtypes(load_data):
@@ -61,23 +62,24 @@ def test_column_dtypes(load_data):
         'fnlgt': 'int64',
         'education': 'object',
         'education-num': 'int64',
-        'marital-status': 'object',  
+        'marital-status': 'object',
         'occupation': 'object',
         'relationship': 'object',
         'race': 'object',
         'sex': 'object',
         'capital-gain': 'int64',
         'capital-loss': 'int64',
-        'hours-per-week': 'int64',  
+        'hours-per-week': 'int64',
         'native-country': 'object',
-        'salary':'int64'
+        'salary': 'int64'
     }
 
     # Load the data (X is the features DataFrame)
     X, y = load_data  # `load_data` is passed as a fixture by pytest
 
     df = pd.concat([X, y], axis=1)  # Concatenate X and y along columns
-    df.rename(columns={y.name: 'salary'}, inplace=True)  # Rename target column to 'salary'
+    # Rename target column to 'salary'
+    df.rename(columns={y.name: 'salary'}, inplace=True)
 
     # Loop through expected column names and datatypes
     for column, expected_dtype in expected_dtypes.items():
