@@ -7,6 +7,14 @@ from enum import Enum
 from typing import Optional
 from pydantic import BaseModel
 
+# Define the Enum for valid example types
+class ExampleType(str, Enum):
+    class_less_than_50k = "Class <=50k (Label 0)"
+    class_greater_than_50k = "Class >50k (Label 1)"
+    missing_sample = "Missing sample"
+    error_sample = "Error sample"
+    
+
 # Pydantic model for input validation
 class FeatureInfo(str, Enum):
     age = "age"

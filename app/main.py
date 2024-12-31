@@ -1,17 +1,18 @@
+"""
+Author: Rui Lu
+Date: December, 2024
+This script holds main functions for fastapi app
+"""
 import os
 import yaml
 import joblib
 import pandas as pd
-import numpy as np
-from fastapi import FastAPI, Body, HTTPException
-from pydantic import BaseModel
+from fastapi import FastAPI, HTTPException
 from typing import List
-from enum import Enum
-
-# Import custom modules for processing data and inference
+from pydantic import BaseModel
 from pipeline.data import process_data
 from pipeline.model import inference
-from app.schemas import Person, FeatureInfo
+from app.schemas import FeatureInfo, ExampleType
 
 # Define the application
 app = FastAPI(
@@ -31,8 +32,8 @@ with open(EXAMPLES_PATH) as fp:
 
 # List of categorical features (ensure correct spelling)
 categorical_features = ['marital-status', 'occupation', 'relationship', 'education', 'race', 'sex', 'workclass', 'native-country', 'salary']
-
 label = 'salary'
+
 
 # Greeting endpoint
 @app.get("/")
@@ -47,10 +48,10 @@ def example_data_extract(example_data):
     """
     # Define the example types you want to iterate over
     example_types = [
-        "Class <=50k (Label 0)",
-        "Class >50k (Label 1)",
-        "Missing sample",
-        "Error sample"
+        ExampleType.class_less_than_50k,
+        ExampleType.class_greater_than_50k,
+        ExampleType.missing_sample,
+        ExampleType.error_sample
     ]
 
     # Initialize an empty list to collect DataFrames
@@ -72,8 +73,8 @@ def example_data_extract(example_data):
             # Add a new column 'salary' with value 'NA'
             df['salary'] = "NA"
 
-            # Optionally add the 'example_type' to keep track of the source
-            df['example_type'] = item
+            # Add the 'example_type' to keep track of the source
+            df['example_type'] = item.value
 
             # Append the current DataFrame to the list
             dataframes.append(df)
@@ -94,7 +95,7 @@ def example_data_extract(example_data):
 
 # Feature info endpoint
 @app.get("/feature_info/{feature_name}")
-async def feature_info(feature_name: FeatureInfo):
+async def feature_info(feature_name: str):
     """
     Retrieve information about a feature.
     """
@@ -107,30 +108,29 @@ async def feature_info(feature_name: FeatureInfo):
 # Prediction endpoint
 @app.post("/predict/")
 async def predict(
-    categorical_features: List[str] = categorical_features,
-    label: str = label,
-    example: str = "Class <=50k (Label 0)",  # Default example type
-    example_data: dict = Body(...),  # Receive the example data as JSON
+    example: str = ExampleType.class_less_than_50k,  # Default example type
 ):
-    """
-    Predict the salary based on the provided example data.
-    This endpoint processes the input data and returns the prediction result.
-    """
-    # Extract the data from the provided example data
-    df = example_data_extract(example_data)
+    # Extract example data into DataFrame
+    df = example_data_extract(examples)
+
+    if df.empty:
+        raise HTTPException(status_code=404, detail="No valid example data available.")
 
     # Process the data (this will return X and y)
     X, y = process_data(df, categorical_features, label)
-
+    
     # Filter the data to match the selected example type (e.g., "Class <=50k (Label 0)")
     X_example = X[X["example_type"] == example].drop("example_type", axis=1)
 
+    if X_example.empty:
+        raise HTTPException(status_code=404, detail=f"No data available for example type: {example}")
+
     # Perform inference (model inference using the X_example data)
     pred_label, pred_prob = inference(model, X_example)
-
+    
     # Convert predicted label to integer and probability to float
     pred_label = int(pred_label)
-    pred_probs = float(pred_prob[:, 1])
+    pred_prob = float(pred_prob[:, 1])
 
     # Determine salary class based on the predicted label
     pred_salary = ">50k" if pred_label == 1 else "<=50k"
@@ -138,6 +138,6 @@ async def predict(
     # Return the prediction results
     return {
         'label': pred_label,
-        'prob': pred_probs,
+        'prob': pred_prob,
         'salary': pred_salary
     }
