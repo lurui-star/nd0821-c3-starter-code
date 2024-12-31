@@ -21,19 +21,15 @@ app = FastAPI(
     version="0.1",
 )
 
+with open("config.yaml", "r") as file:
+    config = yaml.safe_load(file)
+
 # Model path setup
-MODEL_PATH = os.path.join("/Users/ruilu/nd0821-c3-starter-code/starter/model", "best_model.pkl")
-model = joblib.load(MODEL_PATH)
+model = joblib.load(config['model_dir'])
 
 # Feature and Example Information
-EXAMPLES_PATH = "/Users/ruilu/nd0821-c3-starter-code/starter/app/examples.yaml"
-with open(EXAMPLES_PATH) as fp:
+with open(config['example_dir']) as fp:
     examples = yaml.safe_load(fp)
-
-# List of categorical features (ensure correct spelling)
-categorical_features = ['marital-status', 'occupation', 'relationship', 'education', 'race', 'sex', 'workclass', 'native-country', 'salary']
-label = 'salary'
-
 
 # Greeting endpoint
 @app.get("/")
@@ -117,7 +113,7 @@ async def predict(
         raise HTTPException(status_code=404, detail="No valid example data available.")
 
     # Process the data (this will return X and y)
-    X, y = process_data(df, categorical_features, label)
+    X, y = process_data(df, config["main"]["data"]["categorical_features"],config["main"]["data"]["label"])
     
     # Filter the data to match the selected example type (e.g., "Class <=50k (Label 0)")
     X_example = X[X["example_type"] == example].drop("example_type", axis=1)

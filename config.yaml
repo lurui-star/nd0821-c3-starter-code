@@ -63,3 +63,6 @@ main:
     output_dir: "/results"
     model_dir : "/model"
 
+model_dir: "/Users/ruilu/nd0821-c3-starter-code/starter/model/best_model.pkl"
+example_dir: "/Users/ruilu/nd0821-c3-starter-code/starter/app/examples.yaml"
+
