@@ -21,7 +21,7 @@ app = FastAPI(
     version="0.1",
 )
 
-with open("config.yaml", "r") as file:
+with open("/Users/ruilu/nd0821-c3-starter-code/starter/config.yaml", "r") as file:
     config = yaml.safe_load(file)
 
 # Model path setup
