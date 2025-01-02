@@ -63,11 +63,9 @@ def go(config):
     logging.info("Run inference on the validation set")
     Y_test_pred, Y_test_pred_prob = inference(best_model, X_val)
     logging.info("Evaluate the model performance")
-    run_evaluate_model(y_val, Y_test_pred, Y_test_pred_prob, best_model, X_val, output_dir=os.getcwd()+config["main"]["modeling"]["output_dir"],
-                       model_dir=os.getcwd() +
-                       config["main"]["modeling"]["model_dir"],
-                       slice_evaluation_by_feature=config["main"]["modeling"][
-                           "slice_output"]["slice_evaluation_by_feature"],
+    run_evaluate_model(y_val, Y_test_pred, Y_test_pred_prob, best_model, X_val, output_dir=config["main"]["modeling"]["output_dir"],
+                       model_dir=config["main"]["modeling"]["model_dir"],
+                       slice_evaluation_by_feature=config["main"]["modeling"]["slice_output"]["slice_evaluation_by_feature"],
                        categorical_features=config["main"]["modeling"]["slice_output"]["categorical_features"])
 
 

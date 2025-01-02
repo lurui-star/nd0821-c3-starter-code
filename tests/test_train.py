@@ -57,10 +57,8 @@ def test_train_and_evaluate_model(train_test_split_fixture, config):
         run_evaluate_model(y_val, Y_test_pred, Y_test_pred_prob, best_model, X_val,
                            output_dir=os.getcwd() +
                            config["main"]["modeling"]["output_dir"],
-                           model_dir=os.getcwd() +
-                           config["main"]["modeling"]["model_dir"],
-                           slice_evaluation_by_feature=config["main"]["modeling"][
-                               "slice_output"]["slice_evaluation_by_feature"],
+                           model_dir=config["main"]["modeling"]["model_dir"],
+                           slice_evaluation_by_feature=config["main"]["modeling"]["slice_output"]["slice_evaluation_by_feature"],
                            categorical_features=config["main"]["modeling"]["slice_output"]["categorical_features"])
 
         logging.info("SUCCESS: Training and evaluating model")
@@ -71,12 +69,12 @@ def test_train_and_evaluate_model(train_test_split_fixture, config):
 
     # Check if the model was saved
     model_name = "best_model.pkl"
-    model_path = os.getcwd()+config["main"]["modeling"]["model_dir"]
+    model_path = config["main"]["modeling"]["model_dir"]
     check_file_exists(model_path, model_name)
 
     # Check if ROC image exists
     roc_image_name = 'roc_curve.png'
-    image_path = os.getcwd()+config["main"]["modeling"]["output_dir"]
+    image_path = config["main"]["modeling"]["output_dir"]
     check_file_exists(image_path, roc_image_name)
 
     # Check if Feature Importance image exists
