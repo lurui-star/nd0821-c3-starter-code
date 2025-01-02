@@ -29,12 +29,13 @@ jobs:
         python -m pip install --upgrade pip  # Upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi  # Install dependencies if requirements.txt exists
 
+    # Run pytest to execute tests
+    - name: Run pytest
+      run: |
+        pytest starter/tests -vv  # Run pytest with verbose output (adjust test paths if necessary)
     # Run flake8 to check code style
     - name: Run flake8
       run: |
         flake8 .  # Run flake8 on the repository (adjust paths if necessary)
 
-    # Run pytest to execute tests
-    - name: Run pytest
-      run: |
-        pytest starter/tests -vv  # Run pytest with verbose output (adjust test paths if necessary)
+  
