@@ -1,11 +1,10 @@
 """
 Author: Rui Lu
 Date: December 2024
-
 This script contains a function to fetch data from a local directory and perform preliminary cleaning.
 """
+
 import pandas as pd
-import numpy as np
 import logging
 
 
@@ -39,10 +38,10 @@ def import_data(pth):
 
 
 def process_data(X, categorical_features=[], label=None):
-    """ Process the data used in the machine learning pipeline.
+    """Process the data used in the machine learning pipeline.
 
     Processes the data by stripping spaces from categorical features and optionally
-    separates out the label if provided. This function can be used for both training and 
+    separates out the label if provided. This function can be used for both training and
     inference/validation.
 
     Parameters
@@ -50,7 +49,7 @@ def process_data(X, categorical_features=[], label=None):
     X : pd.DataFrame
         DataFrame containing the features and label.
     categorical_features : list of str, optional, default=[]
-        List containing the names of the categorical features. 
+        List containing the names of the categorical features.
         Will strip spaces and ensure they are in string format.
     label : str or None, optional, default=None
         Name of the label column in X. If None, the function will return an empty DataFrame for y.
@@ -75,7 +74,7 @@ def process_data(X, categorical_features=[], label=None):
     if label is not None:
         if label not in X.columns:
             raise ValueError(f"Label column '{label}' not found in X.")
-        y = X[label].map({'<=50K': 0, '>50K': 1})  # Return as pandas Series
+        y = X[label].map({"<=50K": 0, ">50K": 1})  # Return as pandas Series
         X = X.drop([label], axis=1)
     else:
         y = None  # Return None if no label is provided

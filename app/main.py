@@ -3,16 +3,14 @@ Author: Rui Lu
 Date: December, 2024
 This script holds main functions for fastapi app
 """
-import os
+
 import yaml
 import joblib
 import pandas as pd
 from fastapi import FastAPI, HTTPException
-from typing import List
-from pydantic import BaseModel
 from pipeline.data import process_data
 from pipeline.model import inference
-from app.schemas import FeatureInfo, ExampleType
+from app.schemas import ExampleType
 
 # Define the application
 app = FastAPI(
@@ -25,10 +23,10 @@ with open("/Users/ruilu/nd0821-c3-starter-code/starter/config.yaml", "r") as fil
     config = yaml.safe_load(file)
 
 # Model path setup
-model = joblib.load(config['model_dir'])
+model = joblib.load(config["model_dir"])
 
 # Feature and Example Information
-with open(config['example_dir']) as fp:
+with open(config["example_dir"]) as fp:
     examples = yaml.safe_load(fp)
 
 # Greeting endpoint
@@ -37,6 +35,7 @@ with open(config['example_dir']) as fp:
 @app.get("/")
 async def greetings():
     return {"greeting": "Welcome to salary prediction!"}
+
 
 # Function to extract example data
 
@@ -51,7 +50,7 @@ def example_data_extract(example_data):
         ExampleType.class_less_than_50k,
         ExampleType.class_greater_than_50k,
         ExampleType.missing_sample,
-        ExampleType.error_sample
+        ExampleType.error_sample,
     ]
 
     # Initialize an empty list to collect DataFrames
@@ -61,8 +60,7 @@ def example_data_extract(example_data):
     for item in example_types:
         try:
             # Extract the data using the example type
-            data = example_data['post_examples'].get(
-                item, {}).get('value', None)
+            data = example_data["post_examples"].get(item, {}).get("value", None)
 
             if data is None:
                 print(f"Warning: No data found for {item}. Skipping.")
@@ -72,10 +70,10 @@ def example_data_extract(example_data):
             df = pd.DataFrame([data])
 
             # Add a new column 'salary' with value 'NA'
-            df['salary'] = "NA"
+            df["salary"] = "NA"
 
             # Add the 'example_type' to keep track of the source
-            df['example_type'] = item.value
+            df["example_type"] = item.value
 
             # Append the current DataFrame to the list
             dataframes.append(df)
@@ -94,6 +92,7 @@ def example_data_extract(example_data):
 
     return final_df
 
+
 # Feature info endpoint
 
 
@@ -103,11 +102,13 @@ async def feature_info(feature_name: str):
     Retrieve information about a feature.
     """
     try:
-        info = examples['features_info'][feature_name]
+        info = examples["features_info"][feature_name]
         return info
     except KeyError:
         raise HTTPException(
-            status_code=404, detail=f"Feature '{feature_name}' not found.")
+            status_code=404, detail=f"Feature '{feature_name}' not found."
+        )
+
 
 # Prediction endpoint
 
@@ -120,19 +121,23 @@ async def predict(
     df = example_data_extract(examples)
 
     if df.empty:
-        raise HTTPException(
-            status_code=404, detail="No valid example data available.")
+        raise HTTPException(status_code=404, detail="No valid example data available.")
 
     # Process the data (this will return X and y)
     X, y = process_data(
-        df, config["main"]["data"]["categorical_features"], config["main"]["data"]["label"])
+        df,
+        config["main"]["data"]["categorical_features"],
+        config["main"]["data"]["label"],
+    )
 
     # Filter the data to match the selected example type (e.g., "Class <=50k (Label 0)")
     X_example = X[X["example_type"] == example].drop("example_type", axis=1)
 
     if X_example.empty:
         raise HTTPException(
-            status_code=404, detail=f"No data available for example type: {example}")
+            status_code=404,
+            detail=f"No data available for example type: {example}",
+        )
 
     # Perform inference (model inference using the X_example data)
     pred_label, pred_prob = inference(model, X_example)
@@ -145,8 +150,4 @@ async def predict(
     pred_salary = ">50k" if pred_label == 1 else "<=50k"
 
     # Return the prediction results
-    return {
-        'label': pred_label,
-        'prob': pred_prob,
-        'salary': pred_salary
-    }
+    return {"label": pred_label, "prob": pred_prob, "salary": pred_salary}
