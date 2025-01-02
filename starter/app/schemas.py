@@ -3,6 +3,7 @@ Author: Rui Lu
 Date: December, 2024
 This script holds schemas for fastapi app
 """
+
 from enum import Enum
 from typing import Optional
 from pydantic import BaseModel

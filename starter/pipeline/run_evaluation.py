@@ -1,10 +1,10 @@
 """
 Author: Rui Lu
 Date: December, 2024
-This script run evaluate_model 
+This script run evaluate_model
 """
+
 import logging
-import pickle
 import os
 import pandas as pd
 from pipeline.utils import plot_roc_curve
@@ -17,8 +17,18 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 logger = logging.getLogger()
 
 
-def run_evaluate_model(y, Y_pred, Y_pred_prob, best_model, X, categorical_features, output_dir=".", model_dir=".", set_name="Test Set",
-                       slice_evaluation_by_feature=True):
+def run_evaluate_model(
+    y,
+    Y_pred,
+    Y_pred_prob,
+    best_model,
+    X,
+    categorical_features,
+    output_dir=".",
+    model_dir=".",
+    set_name="Test Set",
+    slice_evaluation_by_feature=True,
+):
     """
     Evaluates model performance and saves results, including metrics, plots, and the model itself, to the specified directory.
 
@@ -66,12 +76,12 @@ def run_evaluate_model(y, Y_pred, Y_pred_prob, best_model, X, categorical_featur
         y, Y_pred, Y_pred_prob, slice_display=False)
 
     # Extract evaluation metrics
-    precision = meta_evaluation['precision']
-    recall = meta_evaluation['recall']
-    fbeta = meta_evaluation['fbeta']
-    fpr = meta_evaluation['fpr']
-    tpr = meta_evaluation['tpr']
-    roc_auc = meta_evaluation['roc_auc']
+    precision = meta_evaluation["precision"]
+    recall = meta_evaluation["recall"]
+    fbeta = meta_evaluation["fbeta"]
+    fpr = meta_evaluation["fpr"]
+    tpr = meta_evaluation["tpr"]
+    roc_auc = meta_evaluation["roc_auc"]
 
     # Print metrics to console
     print(f"Precision: {precision}")
@@ -81,11 +91,13 @@ def run_evaluate_model(y, Y_pred, Y_pred_prob, best_model, X, categorical_featur
 
     # Save the evaluation metrics to a CSV file
     logging.info("Saving evaluation metrics to CSV...")
-    metrics_df = pd.DataFrame({
-        'Metric': ['Precision', 'Recall', 'F-Beta', 'ROC AUC'],
-        'Score': [precision, recall, fbeta, roc_auc]
-    })
-    metrics_file = os.path.join(output_dir, 'model_metrics.csv')
+    metrics_df = pd.DataFrame(
+        {
+            "Metric": ["Precision", "Recall", "F-Beta", "ROC AUC"],
+            "Score": [precision, recall, fbeta, roc_auc],
+        }
+    )
+    metrics_file = os.path.join(output_dir, "model_metrics.csv")
     metrics_df.to_csv(metrics_file, index=False)
     print(f"Metrics saved to {metrics_file}")
 
@@ -105,6 +117,7 @@ def run_evaluate_model(y, Y_pred, Y_pred_prob, best_model, X, categorical_featur
     if slice_evaluation_by_feature:
         logging.info("Evaluating by categorical features...")
         slice_compute_model_metrics(
-            X, y, Y_pred, Y_pred_prob, categorical_features, output_dir)
+            X, y, Y_pred, Y_pred_prob, categorical_features, output_dir
+        )
 
     print(f"Model evaluation complete. Results saved to {output_dir}.")
