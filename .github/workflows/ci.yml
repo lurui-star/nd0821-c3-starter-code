@@ -1,5 +1,4 @@
 name: Python CI
-
 on: 
   push:  # Trigger action on push events
     branches:
