@@ -20,7 +20,8 @@ app = FastAPI(
     version="0.1",
 )
 
-with open("config.yaml", "r") as file:
+config_path = os.path.abspath(os.path.join(os.getcwd(), "config.yaml"))
+with open(config_path, "r") as file:
     config = yaml.safe_load(file)
 
 # Model path setup
@@ -109,7 +110,6 @@ async def feature_info(feature_name: str):
         raise HTTPException(
             status_code=404, detail=f"Feature '{feature_name}' not found."
         )
-
 
 # Prediction endpoint
 @app.post("/predict/")
