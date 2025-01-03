@@ -24,10 +24,11 @@ with open("config.yaml", "r") as file:
     config = yaml.safe_load(file)
 
 # Model path setup
-model = joblib.load(os.path.abspath(os.path.join(os.getcwd(),config["best_model_dir"])))
+model = joblib.load(os.path.abspath(
+    os.path.join(os.getcwd(), config["best_model_dir"])))
 
 # Feature and Example Information
-with open(os.path.abspath(os.path.join(os.getcwd(),config["example_dir"]))) as fp:
+with open(os.path.abspath(os.path.join(os.getcwd(), config["example_dir"]))) as fp:
     examples = yaml.safe_load(fp)
 
 # Greeting endpoint
@@ -59,7 +60,8 @@ def example_data_extract(example_data):
     for item in example_types:
         try:
             # Extract the data using the example type
-            data = example_data["post_examples"].get(item, {}).get("value", None)
+            data = example_data["post_examples"].get(
+                item, {}).get("value", None)
 
             if data is None:
                 print(f"Warning: No data found for {item}. Skipping.")
@@ -118,7 +120,8 @@ async def predict(
     df = example_data_extract(examples)
 
     if df.empty:
-        raise HTTPException(status_code=404, detail="No valid example data available.")
+        raise HTTPException(
+            status_code=404, detail="No valid example data available.")
 
     # Process the data (this will return X and y)
     X, y = process_data(

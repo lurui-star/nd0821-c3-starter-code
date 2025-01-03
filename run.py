@@ -74,8 +74,10 @@ def go(config):
         Y_test_pred_prob,
         best_model,
         X_val,
-        output_dir=os.path.abspath(os.path.join(os.getcwd(), config["main"]["modeling"]["output_dir"])),
-        model_dir=os.path.abspath(os.path.join(os.getcwd(),config["main"]["modeling"]["model_dir"])),
+        output_dir=os.path.abspath(os.path.join(
+            os.getcwd(), config["main"]["modeling"]["output_dir"])),
+        model_dir=os.path.abspath(os.path.join(
+            os.getcwd(), config["main"]["modeling"]["model_dir"])),
         slice_evaluation_by_feature=config["main"]["modeling"]["slice_output"][
             "slice_evaluation_by_feature"
         ],
