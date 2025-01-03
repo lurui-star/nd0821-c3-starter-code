@@ -19,11 +19,8 @@ def config():
     Returns:
         dict: Loaded configuration from config.yaml
     """
-    # Define the path to the folder where the config.yaml file is located
-    config_folder = "/starter"
-
     # Construct the full path to the config.yaml file
-    config_path = os.path.join(config_folder, "config.yaml")
+    config_path = os.path.join(os.getcwd(), "config.yaml")
 
     # Open and load the YAML config file
     with open(config_path, "r") as file:
