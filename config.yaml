@@ -1,7 +1,7 @@
 main:
   project_name: "starter"  
   data:
-    pth: "/Users/ruilu/nd0821-c3-starter-code/data/census.csv"
+    pth: '../data/census.csv'
     categorical_features: 
       - 'marital-status'
       - 'occupation'
@@ -60,9 +60,9 @@ main:
         slice_evaluation_by_feature: True
         categorical_features: 
         - 'sex'
-    output_dir: "/Users/ruilu/nd0821-c3-starter-code/results"
-    model_dir : "/Users/ruilu/nd0821-c3-starter-code/model"
+    output_dir: '../results'
+    model_dir : '../model'
 
-model_dir: "/Users/ruilu/nd0821-c3-starter-code/model/best_model.pkl"
-example_dir: "/Users/ruilu/nd0821-c3-starter-code/starter/app/examples.yaml"
+best_model_dir: "../model/best_model.pkl"
+example_dir: "app/examples.yaml"
 
