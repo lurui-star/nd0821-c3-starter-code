@@ -2,7 +2,7 @@ name: Python CI
 on: 
   push:  # Trigger action on push events
     branches:
-      - master  # Run only on pushes to the 'master' branch
+      - development # Run only on pushes to the 'master' branch
 
 jobs:
   build:
