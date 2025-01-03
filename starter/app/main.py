@@ -5,6 +5,7 @@ This script holds main functions for fastapi app
 """
 
 import yaml
+import os
 import joblib
 import pandas as pd
 from fastapi import FastAPI, HTTPException
@@ -19,14 +20,15 @@ app = FastAPI(
     version="0.1",
 )
 
-with open("/Users/ruilu/nd0821-c3-starter-code/starter/config.yaml", "r") as file:
+with open("config.yaml", "r") as file:
     config = yaml.safe_load(file)
 
 # Model path setup
-model = joblib.load(config["model_dir"])
+model = joblib.load(os.path.abspath(
+    os.path.join(os.getcwd(), config["best_model_dir"])))
 
 # Feature and Example Information
-with open(config["example_dir"]) as fp:
+with open(os.path.abspath(os.path.join(os.getcwd(), config["example_dir"]))) as fp:
     examples = yaml.safe_load(fp)
 
 # Greeting endpoint
@@ -38,8 +40,6 @@ async def greetings():
 
 
 # Function to extract example data
-
-
 def example_data_extract(example_data):
     """
     Extract and return a DataFrame from the provided example data.
@@ -60,7 +60,8 @@ def example_data_extract(example_data):
     for item in example_types:
         try:
             # Extract the data using the example type
-            data = example_data["post_examples"].get(item, {}).get("value", None)
+            data = example_data["post_examples"].get(
+                item, {}).get("value", None)
 
             if data is None:
                 print(f"Warning: No data found for {item}. Skipping.")
@@ -111,8 +112,6 @@ async def feature_info(feature_name: str):
 
 
 # Prediction endpoint
-
-
 @app.post("/predict/")
 async def predict(
     example: str = ExampleType.class_less_than_50k,  # Default example type
@@ -121,7 +120,8 @@ async def predict(
     df = example_data_extract(examples)
 
     if df.empty:
-        raise HTTPException(status_code=404, detail="No valid example data available.")
+        raise HTTPException(
+            status_code=404, detail="No valid example data available.")
 
     # Process the data (this will return X and y)
     X, y = process_data(

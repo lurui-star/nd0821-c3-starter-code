@@ -5,6 +5,7 @@ This script contains a function to fetch data from a local directory and perform
 """
 
 import pandas as pd
+import os
 import logging
 
 
@@ -29,7 +30,8 @@ def import_data(pth):
 
     # Load the dataset from the given path
     logger.info("Downloading data set")
-    X = pd.read_csv(pth)
+    file_path = os.path.abspath(os.path.join(os.getcwd(), pth))
+    X = pd.read_csv(file_path)
 
     # Strip column names
     X.columns = X.columns.str.strip()
