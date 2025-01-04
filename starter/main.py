@@ -27,8 +27,7 @@ with config_path.open() as file:
     config = yaml.safe_load(file)
 
 # Model path setup
-model = joblib.load(os.path.abspath(
-    os.path.join(os.getcwd(), config["best_model_dir"])))
+model = joblib.load(base_dir/config["best_model_dir"])
 
 # Feature and Example Information
 with open(os.path.abspath(os.path.join(os.getcwd(), config["example_dir"]))) as fp:

@@ -63,6 +63,6 @@ main:
     output_dir: '../results'
     model_dir : '../model'
 
-best_model_dir: "../model/best_model.pkl"
+best_model_dir: "model/best_model.pkl"
 example_dir: "app/examples.yaml"
 
