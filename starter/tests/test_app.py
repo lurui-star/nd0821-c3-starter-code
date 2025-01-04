@@ -7,7 +7,7 @@ This script holds the test functions for api module
 import pytest
 from http import HTTPStatus
 from fastapi.testclient import TestClient
-from app.main import app
+from main import app
 
 client = TestClient(app)
 
