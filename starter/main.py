@@ -12,6 +12,7 @@ from fastapi import FastAPI, HTTPException
 from pipeline.data import process_data
 from pipeline.model import inference
 from app.schemas import ExampleType
+from pathlib import Path
 
 # Define the application
 app = FastAPI(
@@ -19,9 +20,10 @@ app = FastAPI(
     description="Deploying a Machine Learning Model on Heroku with FastAPI",
     version="0.1",
 )
+base_dir = Path(__file__).resolve().parent.parent
+config_path = base_dir /"starter"/ "config.yaml"
 
-config_path = os.path.abspath(os.path.join(os.getcwd(), "config.yaml"))
-with open(config_path, "r") as file:
+with config_path.open() as file:
     config = yaml.safe_load(file)
 
 # Model path setup
