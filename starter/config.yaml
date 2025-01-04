@@ -1,7 +1,7 @@
 main:
   project_name: "starter"  
   data:
-    pth: '../data/census.csv'
+    pth: '/data/census.csv'
     categorical_features: 
       - 'marital-status'
       - 'occupation'
@@ -60,8 +60,8 @@ main:
         slice_evaluation_by_feature: True
         categorical_features: 
         - 'sex'
-    output_dir: '../results'
-    model_dir : '../model'
+    output_dir: '/results'
+    model_dir : '/model'
 
 best_model_dir: "model/best_model.pkl"
 example_dir: "starter/app/examples.yaml"
