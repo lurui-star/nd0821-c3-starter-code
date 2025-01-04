@@ -24,7 +24,7 @@ def config():
     """
     # Construct the full path to the config.yaml file
     # Construct the full path to the config.yaml file
-    config_path =  base_dir.joinpath("data","config.yaml")
+    config_path = base_dir/"config.yaml"
 
     # Check if the file exists to avoid runtime errors
     if not config_path.exists():
@@ -47,7 +47,7 @@ def load_data(config):
         tuple: Processed features (X) and labels (y)
     """
     # Check if the data exists at the given path
-    data_path =base_dir/config["main"]["data"]["pth"]
+    data_path = base_dir.joinpath("data",config["main"]["data"]["pth"])
     if not os.path.exists(data_path):
         pytest.fail(f"Data not found at path: {data_path}")
     # Import the data from the specified path
