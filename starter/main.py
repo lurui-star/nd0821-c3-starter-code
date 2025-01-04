@@ -30,7 +30,7 @@ with config_path.open() as file:
 model = joblib.load(base_dir/config["best_model_dir"])
 
 # Feature and Example Information
-with open(os.path.abspath(os.path.join(os.getcwd(), config["example_dir"]))) as fp:
+with open(base_dir/config["example_dir"]) as fp:
     examples = yaml.safe_load(fp)
 
 # Greeting endpoint

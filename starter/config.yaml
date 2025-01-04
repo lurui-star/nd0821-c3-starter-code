@@ -64,5 +64,5 @@ main:
     model_dir : '../model'
 
 best_model_dir: "model/best_model.pkl"
-example_dir: "app/examples.yaml"
+example_dir: "starter/app/examples.yaml"
 
