@@ -5,11 +5,14 @@ This script holds configuration of the test section
 """
 
 import os
+from pathlib import Path
 from pipeline.data import import_data, process_data
 from sklearn.model_selection import train_test_split
 import pytest
 import yaml
 
+
+base_dir= Path(__file__).parent.parent.absolute()
 
 @pytest.fixture(scope="session")
 def config():
@@ -20,7 +23,13 @@ def config():
         dict: Loaded configuration from config.yaml
     """
     # Construct the full path to the config.yaml file
-    config_path = os.getcwd()+"starter"+"config.yaml"
+    # Construct the full path to the config.yaml file
+    config_path = base_dir /"config.yaml"
+
+    # Check if the file exists to avoid runtime errors
+    if not config_path.exists():
+        raise FileNotFoundError(f"Config file not found at {config_path}")
+
     # Open and load the YAML config file
     with open(config_path, "r") as file:
         config = yaml.safe_load(file)
