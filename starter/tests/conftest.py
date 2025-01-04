@@ -24,7 +24,7 @@ def config():
     """
     # Construct the full path to the config.yaml file
     # Construct the full path to the config.yaml file
-    config_path = base_dir/"starter"/config.yaml"
+    config_path = base_dir/"starter"/"config.yaml"
 
     # Check if the file exists to avoid runtime errors
     if not config_path.exists():
