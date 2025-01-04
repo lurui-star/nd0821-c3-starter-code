@@ -47,7 +47,7 @@ def load_data(config):
         tuple: Processed features (X) and labels (y)
     """
     # Check if the data exists at the given path
-    data_path = base_dir.joinpath(config["main"]["data"]["pth"])
+    data_path = base_dir/"data"/"census.csv"
     if not os.path.exists(data_path):
         pytest.fail(f"Data not found at path: {data_path}")
     # Import the data from the specified path
