@@ -23,12 +23,18 @@ def config():
         dict: Loaded configuration from config.yaml
     """
     # Construct the full path to the config.yaml file
+<<<<<<< HEAD
     # Construct the full path to the config.yaml file
     config_path = base_dir/"config.yaml"
 
     # Check if the file exists to avoid runtime errors
     if not config_path.exists():
         raise FileNotFoundError(f"Config file not found at {config_path}")
+||||||| 8c72432
+    config_path = os.path.join(config_folder, "config.yaml")
+=======
+    config_path = os.path.join(os.getcwd(), "config.yaml")
+>>>>>>> 5a6865139d94e12c10b9fc59559fe5ab5c8b012d
 
     # Open and load the YAML config file
     with open(config_path, "r") as file:
