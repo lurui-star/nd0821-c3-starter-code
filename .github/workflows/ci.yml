@@ -29,7 +29,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi  # Install dependencies if requirements.txt exists
 
     # Run pytest to execute tests
-    - name: Run pytest
+    - name: Run src/tests/pytest
       run: |
         pytest tests -vv  # Run pytest with verbose output (adjust test paths if necessary)
     # Run flake8 to check code style
