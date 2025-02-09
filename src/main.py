@@ -21,10 +21,11 @@ app = FastAPI(
     version="0.1",
 )
 # Dynamically add the 'src' directory to sys.path
-src_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'src'))
-sys.path.insert(0, src_dir)
+src_dir = os.path.abspath(os.path.dirname(__file__))
 
-with open("config.yaml", "r") as file:
+config_path = os.path.join(src_dir, "config.yaml")
+
+with open(config_path, "r") as file:
     config = yaml.safe_load(file)
 
 # Model path setup
