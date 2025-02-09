@@ -20,7 +20,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3  # Updated to latest stable v3
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: ${{matrix.python-version }}
 
     # Install dependencies
     - name: Install dependencies
@@ -31,7 +31,7 @@ jobs:
     # Run pytest to execute tests
     - name: Run pytest
       run: |
-        pytest starter/tests -vv  # Run pytest with verbose output (adjust test paths if necessary)
+        pytest tests -vv  # Run pytest with verbose output (adjust test paths if necessary)
     # Run flake8 to check code style
     - name: Run flake8
       run: |
