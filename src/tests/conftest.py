@@ -23,16 +23,12 @@ def config():
     Returns:
         dict: Loaded configuration from config.yaml
     """
-    # Construct the full path to the config.yaml file
-    config_path = os.path.join(os.getcwd(), "config.yaml")
-
     # Open and load the YAML config file
-    with open(config_path, "r") as file:
+    with open("config.yaml", "r") as file:
         config = yaml.safe_load(file)
 
     # Return the loaded config to be used in tests
     return config
-
 
 @pytest.fixture(scope="session")
 def load_data(config):
