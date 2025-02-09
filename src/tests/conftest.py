@@ -3,16 +3,17 @@ Author: Rui Lu
 Date: December, 2024
 This script holds configuration of the test section
 """
-
 import os
 from pathlib import Path
 from pipeline.data import import_data, process_data
 from sklearn.model_selection import train_test_split
 import pytest
+import sys
 import yaml
 
-
-base_dir= Path(__file__).parent.parent.absolute()
+# Dynamically add the 'src' directory to sys.path
+src_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'src'))
+sys.path.insert(0, src_dir)
 
 @pytest.fixture(scope="session")
 def config():
@@ -23,13 +24,6 @@ def config():
         dict: Loaded configuration from config.yaml
     """
     # Construct the full path to the config.yaml file
-
-    # Construct the full path to the config.yaml file
-    config_path = base_dir/"config.yaml"
-
-    # Check if the file exists to avoid runtime errors
-    if not config_path.exists():
-        raise FileNotFoundError(f"Config file not found at {config_path}")
     config_path = os.path.join(os.getcwd(), "config.yaml")
 
     # Open and load the YAML config file
@@ -49,9 +43,7 @@ def load_data(config):
         tuple: Processed features (X) and labels (y)
     """
     # Check if the data exists at the given path
-    data_path = base_dir/"data"/"census.csv"
-    if not os.path.exists(data_path):
-        pytest.fail(f"Data not found at path: {data_path}")
+    data_path = config["main"]["data"]["pth"]
     # Import the data from the specified path
     df = import_data(data_path)
     # Process the data: handle categorical features and label
@@ -73,11 +65,6 @@ def train_test_split_fixture(config):
     """
     # Get the data path from the config
     data_path = config["main"]["data"]["pth"]
-
-    # Check if the data exists at the given path
-    if not os.path.exists(data_path):
-        pytest.fail(f"Data not found at path: {data_path}")
-
     # Import the data
     df = import_data(data_path)
 

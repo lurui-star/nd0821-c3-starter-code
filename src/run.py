@@ -19,7 +19,7 @@ import yaml
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
-# Dynamically add the 'starter' directory to sys.path
+# Dynamically add the 'src' directory to sys.path
 src_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'src'))
 sys.path.insert(0, src_dir)
 
